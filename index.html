@@ -5,8 +5,71 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Venta de ropa escolar</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="index.css">
     </head>
     <body>
+        <!-- Encabezado 1-->
+        <header>
+            <div class="container-fluid" id="header1">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>Venta de ropa escolar</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Barra de navegación 1 -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white">
+            <div class="container">
+                <!-- Logo a la izquierda -->
+                <a class="navbar-brand d-flex align-items-center" href="index.html">
+                    <img src="confecciones_brenda_logo.png" alt="Logo" width="50" height="50" class="d-inline-block align-text-top">
+                </a>
+                <!-- Botón para menú responsivo -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Opciones centradas -->
+                <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item mx-2">
+                            <a class="nav-link" href="index.html">Inicio</a>
+                        </li>
+                        <li class="nav-item dropdown mx-2">
+                            <a class="nav-link dropdown-toggle" href="#" id="categoriasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Categorías
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="categoriasDropdown">
+                                <li><a class="dropdown-item" href="#">Buzos</a></li>
+                                <li><a class="dropdown-item" href="#">Polerones</a></li>
+                                <li><a class="dropdown-item" href="#">Pantalones</a></li>
+                                <li><a class="dropdown-item" href="#">Shorts</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown mx-2">
+                            <a class="nav-link dropdown-toggle" href="#" id="contactanosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Contáctanos
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="contactanosDropdown">
+                                <li><a class="dropdown-item" href="#">WhatsApp</a></li>
+                                <li><a class="dropdown-item" href="#">Correo</a></li>
+                                <li><a class="dropdown-item" href="#">Teléfono</a></li>
+                                <li><a class="dropdown-item" href="#">Ubicación</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Barra de navegacion 2-->
+        <nav class="navbar navbar-light bg-light justify-content-center py-3">
+            <form class="d-flex w-75" role="search">
+                <input class="form-control me-2 flex-grow-1" type="search" placeholder="Buscar productos..." aria-label="Buscar">
+                <button class="btn btn-primary" type="submit">Buscar</button>
+            </form>
+        </nav>
         
     </body>
 </html>
