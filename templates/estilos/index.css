@@ -4,7 +4,7 @@
     background-color: #000000;
 }
 /* Estilo de texto del encabezado*/
-header h1 {
+#headerIndex h1 {
     font-size: 1.2rem;
     text-align: center;
     color: #ffffff;
@@ -28,7 +28,3 @@ header h1 {
   display: block;
 }
 
-/*micuenta.html*/
-#headerMiCuenta .row {
-    background-color: #000000;
-}
