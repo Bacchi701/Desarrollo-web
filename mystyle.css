@@ -1,8 +1,8 @@
+/*index.html*/
 /* Color de encabezado principal*/
-header {
+#headerIndex .row {
     background-color: #000000;
 }
-
 /* Estilo de texto del encabezado*/
 header h1 {
     font-size: 1.2rem;
@@ -11,6 +11,7 @@ header h1 {
     padding: 5px;
     margin: 0;
 }
+/* Estilo del carrusel*/
 #mainCarousel .carousel-inner { 
     height: 60vh; 
     min-height: 
@@ -27,3 +28,7 @@ header h1 {
   display: block;
 }
 
+/*micuenta.html*/
+#headerMiCuenta .row {
+    background-color: #000000;
+}
