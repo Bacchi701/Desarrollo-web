@@ -1,30 +1,20 @@
-/*index.html*/
-/* Color de encabezado principal*/
-#headerIndex .row {
-    background-color: #000000;
-}
-/* Estilo de texto del encabezado*/
-#headerIndex h1 {
-    font-size: 1.2rem;
-    text-align: center;
-    color: #ffffff;
-    padding: 5px;
-    margin: 0;
-}
-/* Estilo del carrusel*/
-#mainCarousel .carousel-inner { 
-    height: 60vh; 
-    min-height: 
-    300px; 
-}
-#mainCarousel .carousel-item { 
-    height: 100%; 
-}
-#mainCarousel .carousel-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; 
-  object-position: top center;  /* o center right / 30% 50% */
-  display: block;
-}
+/*
+-- Estilos de index.css --  
 
+Header h1*/
+.header{
+    text-align: center;
+    background-color: black;
+    color: white;
+    padding: 5px;
+}
+/* Logo navbar*/
+#Logo{
+    width: 50px;
+    height: 50px;
+}
+/*Items del navbar1*/
+.nav-item{
+    margin-inline: 30px;
+    
+}

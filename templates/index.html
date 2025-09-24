@@ -5,134 +5,90 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Venta de ropa escolar</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="estilos/index.css">
     </head>
     <body>
-        <!-- Encabezado 1-->
-        <header>
-            <div class="container-fluid" id="headerIndex">
+        <!-- Encabezado principal-->
+        <div class="header">
+            <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12">
-                        <h1>Venta de ropa escolar</h1>
-                    </div>
+                    <div class="col-12">Venta de ropa escolar</div>
                 </div>
             </div>
-        </header>
-        <!-- Barra de navegación 1 -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white">
-            <div class="container">
-                <!-- Logo a la izquierda -->
-                <a class="navbar-brand d-flex align-items-center" href="index.html">
-                    <img src="Imagenes/confecciones_brenda_logo.png" alt="Logo" width="50" height="50" class="d-inline-block align-text-top">
+        </div>
+        <nav class="navbar navbar-expand-lg">
+            <!-- Logo principal-->
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">
+                    <img src="Imagenes/confecciones_brenda_logo.png" alt="Logo" id="Logo"> 
                 </a>
-                <!-- Botón para menú responsivo -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <!-- Opciones centradas -->
+                <!-- NavBar con menus desplegables-->
                 <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
                     <ul class="navbar-nav">
-                        <li class="nav-item mx-2">
-                            <a class="nav-link" href="index.html">Inicio</a>
+                        <!-- Item normal clickeable-->
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="index.html">Inicio</a>
                         </li>
-                        <li class="nav-item dropdown mx-2">
-                            <a class="nav-link dropdown-toggle" href="#" id="categoriasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Categorías
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="categoriasDropdown">
-                                <li><a class="dropdown-item" href="#">Buzos</a></li>
+                        <!-- Items desplegables-->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categorías</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Buzo completo</a></li>
+                                <li><a class="dropdown-item" href="#">Poleras</a></li>
                                 <li><a class="dropdown-item" href="#">Polerones</a></li>
-                                <li><a class="dropdown-item" href="#">Pantalones</a></li>
                                 <li><a class="dropdown-item" href="#">Shorts</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown mx-2">
-                            <a class="nav-link dropdown-toggle" href="#" id="contactanosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Contáctanos
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="contactanosDropdown">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Contáctanos</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Ubicacion</a></li>
                                 <li><a class="dropdown-item" href="#">WhatsApp</a></li>
+                                <li><a class="dropdown-item" href="#">Instagram</a></li>
                                 <li><a class="dropdown-item" href="#">Correo</a></li>
-                                <li><a class="dropdown-item" href="#">Teléfono</a></li>
-                                <li><a class="dropdown-item" href="#">Ubicación</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item mx-2">
-                            <a class="nav-link" href="#">Mi cuenta</a>
+                        <!-- Items normal clickeables-->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Mi Cuenta</a>
                         </li>
-                        <li class="nav-item mx-2">
+                        <li class="nav-item">
                             <a class="nav-link" href="#">Carrito</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
-        <!-- Barra de navegacion 2-->
-        <nav class="navbar navbar-light bg-light justify-content-center py-3">
-            <form class="d-flex w-75" role="search">
-                <input class="form-control me-2 flex-grow-1" type="search" placeholder="Buscar productos..." aria-label="Buscar">
-                <button class="btn btn-primary" type="submit">Buscar</button>
-            </form>
+        <!-- Barra para buscar -->
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid justify-content-center" >
+                <form class="d-flex w-75" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Buscar producto..." aria-label="Search"/>
+                    <button class="btn btn-outline-success" type="submit">Buscar</button>
+                </form>
+            </div>
         </nav>
-        <!-- Carrusel de imagenes -->
-        <div id="mainCarousel" class="carousel slide carousel-fade w-100" data-bs-ride="carousel" data-bs-interval="3000">
+        <!-- Carrusel de Imagenes -->
+        <div id="carruselImagenesIndex" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="Imagenes/jovenes_buzo.png" class="d-block w-100 h-100" alt="Jóvenes con buzo">
+                <img src="Imagenes/jovenes_uniforme.png" class="d-block w-100" alt="Jovenes con uniforme">
                 </div>
                 <div class="carousel-item">
-                    <img src="Imagenes/jovenes_uniforme.png" class="d-block w-100 h-100" alt="Jóvenes con uniforme">
+                <img src="Imagenes/jovenes_buzo.png" class="d-block w-100" alt="Jovenes con buzo">
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+            <button class="carousel-control-prev" type="button" data-bs-target="#carruselImagenesIndex" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Anterior</span>
+                <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+            <button class="carousel-control-next" type="button" data-bs-target="#carruselImagenesIndex" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Siguiente</span>
+                <span class="visually-hidden">Next</span>
             </button>
         </div>
-        <!-- Sección de productos destacados -->
-        <section class="container my-5">
-            <h2 class="text-center mb-4">Productos Destacados</h2>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="Imagenes/buzo_1.png" class="card-img-top" alt="Buzo 1">
-                        <div class="card-body">
-                            <h5 class="card-title">Buzo Escolar Azul</h5>
-                            <p class="card-text">Buzo de algodón 100% con logo bordado.</p>
-                            <p class="card-text"><strong>$25.000</strong></p>
-                            <a href="#" class="btn btn-primary">Comprar</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="Imagenes/pantalon_1.png" class="card-img-top" alt="Pantalón 1">
-                        <div class="card-body">
-                            <h5 class="card-title">Pantalón Escolar Gris</h5>
-                            <p class="card-text">Pantalón de tela resistente con ajuste elástico.</
-                            <p class="card-text"><strong>$30.000</strong></p>
-                            <a href="#" class="btn btn-primary">Comprar</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card h-100">
-                        <img src="Imagenes/poleron_1.png" class="card-img-top" alt="Polerón 1">
-                        <div class="card-body">
-                            <h5 class="card-title">Polerón Escolar Rojo</h5>
-                            <p class="card-text">Polerón con capucha y bolsillo frontal.</p>
-                            <p class="card-text"><strong>$28.000</strong></p>
-                            <a href="#" class="btn btn-primary">Comprar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- Productos destacados en tarjetas -->
+         
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     </body>
 </html>
