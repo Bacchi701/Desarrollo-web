@@ -37,7 +37,7 @@
       "precio": 9000,
       "categoria": "Poleras",
       "tallas": ["4", "6", "8", "10", "12", "S", "M", "L"],
-      "imagen": "Imagenes/jovenes_uniforme.png",
+      "imagen": "Imagenes/polera_blanca.png",
       "stock": 50
     },
     {
@@ -47,7 +47,7 @@
       "precio": 11000,
       "categoria": "Poleras",
       "tallas": ["S", "M", "L", "XL"],
-      "imagen": "Imagenes/jovenes_buzo.png",
+      "imagen": "Imagenes/polera_azul.png",
       "stock": 40
     },
     {
@@ -57,7 +57,7 @@
       "precio": 12000,
       "categoria": "Shorts",
       "tallas": ["6", "8", "10", "12", "S", "M", "L"],
-      "imagen": "Imagenes/jovenes_buzo.png",
+      "imagen": "Imagenes/short_azul.png",
       "stock": 33
     }
   ]
