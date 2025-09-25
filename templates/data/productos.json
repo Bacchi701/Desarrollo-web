@@ -1,0 +1,64 @@
+{
+  "productos": [
+    {
+      "sku": "BUZO-AZUL-01",
+      "nombre": "Buzo escolar azul",
+      "descripcion": "Buzo de algodón 100% con logo bordado.",
+      "precio": 25000,
+      "categoria": "Buzo completo",
+      "tallas": ["4", "6", "8", "10", "12", "S", "M", "L"],
+      "imagen": "Imagenes/buzo_1.png",
+      "stock": 25
+    },
+    {
+      "sku": "PANT-GRIS-01",
+      "nombre": "Pantalón Escolar Gris",
+      "descripcion": "Tela resistente con ajuste elástico.",
+      "precio": 30000,
+      "categoria": "Pantalones",
+      "tallas": ["4", "6", "8", "10", "12", "S", "M", "L"],
+      "imagen": "Imagenes/pantalon_1.png",
+      "stock": 18
+    },
+    {
+      "sku": "POL-ROJO-01",
+      "nombre": "Polerón Escolar Rojo",
+      "descripcion": "Con capucha y bolsillo frontal.",
+      "precio": 28000,
+      "categoria": "Polerones",
+      "tallas": ["S", "M", "L", "XL"],
+      "imagen": "Imagenes/poleron_1.png",
+      "stock": 12
+    },
+    {
+      "sku": "POLERA-BLANCA-01",
+      "nombre": "Polera Blanca",
+      "descripcion": "Algodón peinado, cuello reforzado.",
+      "precio": 9000,
+      "categoria": "Poleras",
+      "tallas": ["4", "6", "8", "10", "12", "S", "M", "L"],
+      "imagen": "Imagenes/jovenes_uniforme.png",
+      "stock": 50
+    },
+    {
+      "sku": "POLERA-AZUL-01",
+      "nombre": "Polera Azul",
+      "descripcion": "Respirable, ideal para deporte.",
+      "precio": 11000,
+      "categoria": "Poleras",
+      "tallas": ["S", "M", "L", "XL"],
+      "imagen": "Imagenes/jovenes_buzo.png",
+      "stock": 40
+    },
+    {
+      "sku": "SHORTS-AZUL-01",
+      "nombre": "Shorts Azul",
+      "descripcion": "Secado rápido, cintura elástica.",
+      "precio": 12000,
+      "categoria": "Shorts",
+      "tallas": ["6", "8", "10", "12", "S", "M", "L"],
+      "imagen": "Imagenes/jovenes_buzo.png",
+      "stock": 33
+    }
+  ]
+}

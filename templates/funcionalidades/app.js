@@ -17,7 +17,7 @@
     if (badge) badge.textContent = count;
   };
 
-  // ---------- Añadir al carrito ----------
+  // ---------- Añadir al carrito (soporta talla y cantidad) ----------
   const handleAddToCart = (e) => {
     const btn = e.target.closest('.btn-add-to-cart');
     if (!btn) return;
@@ -26,13 +26,27 @@
     const name = btn.dataset.name;
     const price = parseInt(btn.dataset.price, 10);
 
+    // Lee talla/cantidad si están disponibles
+    const sizeElSel = btn.dataset.sizeEl || '#selectTalla';
+    const qtyElSel  = btn.dataset.qtyEl  || '#qtyInput';
+    const sizeEl = document.querySelector(sizeElSel);
+    const qtyEl  = document.querySelector(qtyElSel);
+    const size = btn.dataset.size || (sizeEl ? sizeEl.value : null);
+    const qty  = Math.max(1, parseInt(qtyEl?.value || '1', 10));
+
     let cart = getCart();
-    const existing = cart.find((i) => i.sku === sku);
-    if (existing) {
-      existing.qty += 1;
+
+    // Clave compuesta por SKU + talla (para contar por variante)
+    const key = (i) => `${i.sku}@@${i.size || ''}`;
+    const findKey = `${sku}@@${size || ''}`;
+    const index = cart.findIndex(i => key(i) === findKey);
+
+    if (index >= 0) {
+      cart[index].qty += qty;
     } else {
-      cart.push({ sku, name, price, qty: 1 });
+      cart.push({ sku, name, price, qty, size });
     }
+
     saveCart(cart);
     updateCartBadge();
 
@@ -42,9 +56,10 @@
     setTimeout(() => {
       btn.classList.remove('btn-success');
       btn.classList.add('btn-primary');
-      btn.textContent = 'Añadir al carrito';
+      btn.textContent = 'Añadir';
     }, 1500);
   };
+
 
   // ---------- Búsqueda simple en tarjetas ----------
   const initSearch = () => {
