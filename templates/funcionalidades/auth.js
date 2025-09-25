@@ -1,5 +1,3 @@
-<!-- funcionalidades/auth.js -->
-<script>
 (() => {
   const USERS_KEY = 'brenda_users';
   const SESSION_KEY = 'brenda_session';
@@ -104,4 +102,3 @@
     handleLogin();
   });
 })();
-</script>

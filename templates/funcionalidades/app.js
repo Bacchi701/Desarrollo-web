@@ -1,5 +1,3 @@
-<!-- funcionalidades/app.js -->
-<script>
 (() => {
   // ---------- Helpers ----------
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
@@ -74,4 +72,3 @@
     updateCartBadge();
   });
 })();
-</script>
