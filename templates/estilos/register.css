@@ -18,3 +18,8 @@ Header h1*/
     margin-inline: 30px;
     
 }
+.error{
+    color: red;
+    padding-left: 12px;
+    font-size: small;
+}
