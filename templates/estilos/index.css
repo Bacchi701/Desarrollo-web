@@ -1,19 +1,14 @@
-/*
--- Estilos de index.css --  
+.header .col-12 {
+  background: #395a8b;
+  color: #fff;
+  text-align: center;
+  padding: .25rem .5rem;
+  font-weight: 600;
+  letter-spacing: .4px;
+}
 
-Header h1*/
-.header{
-    text-align: center;
-    background-color: black;
-    color: white;
-    padding: 5px;
-}
-/* Logo navbar*/
-#Logo{
-    width: 50px;
-    height: 50px;
-}
-/*Items del navbar1*/
-.nav-item{
-    margin-inline: 30px;
+#Logo { height: 40px; }
+
+.card img {
+  object-fit: cover;
 }

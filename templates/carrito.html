@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Carrito</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="estilos/index.css">
+    </head>
+    <body>
+        <!-- Encabezado principal-->
+        <div class="header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">Venta de ropa escolar</div>
+                </div>
+            </div>
+        </div>
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                    <img src="Imagenes/confecciones_brenda_logo.png" alt="Logo Confecciones Brenda" id="Logo" style="height:40px">
+                </a>
+
+                <!-- Botón hamburguesa -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Alternar navegación">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Contenido colapsable -->
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="index.html" aria-current="page">Inicio</a>
+                        </li>
+
+                        <!-- Categorías -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="categoriasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categorías</a>
+                            <ul class="dropdown-menu" aria-labelledby="categoriasDropdown">
+                                <li><a class="dropdown-item" href="#">Buzo completo</a></li>
+                                <li><a class="dropdown-item" href="#">Poleras</a></li>
+                                <li><a class="dropdown-item" href="#">Polerones</a></li>
+                                <li><a class="dropdown-item" href="#">Shorts</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Contacto -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="contactoDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Contáctanos</a>
+                            <ul class="dropdown-menu" aria-labelledby="contactoDropdown">
+                                <li><a class="dropdown-item" href="#">Ubicación</a></li>
+                                <li><a class="dropdown-item" href="#">WhatsApp</a></li>
+                                <li><a class="dropdown-item" href="#">Instagram</a></li>
+                                <li><a class="dropdown-item" href="#">Correo</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item"><a class="nav-link" href="login.html">Mi Cuenta</a></li>
+                    </ul>
+
+                    <!-- Buscar + Carrito a la derecha -->
+                    <form id="searchForm" class="d-flex me-3" role="search">
+                        <input id="searchInput" class="form-control me-2" type="search" placeholder="Buscar producto..." aria-label="Buscar producto">
+                        <button class="btn btn-outline-success" type="submit">Buscar</button>
+                    </form>
+
+                    <a class="btn btn-outline-primary position-relative" href="carrito.html">
+                        Carrito
+                        <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">0</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        <!-- puedes reutilizar la misma navbar de index -->
+        <div class="container my-5">
+            <h1 class="mb-4">Tu carrito</h1>
+            <div id="carritoLista"></div>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <strong>Total: <span id="carritoTotal">$0</span></strong>
+                <button class="btn btn-success" id="btnPagar" disabled>Proceder al pago</button>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            const CART_KEY = 'brenda_cart';
+            const getCart = () => JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+            const saveCart = (c) => localStorage.setItem(CART_KEY, JSON.stringify(c));
+            const formatCLP = (n) => n.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
+
+            const render = () => {
+                const cont = document.getElementById('carritoLista');
+                const totalEl = document.getElementById('carritoTotal');
+                const pagar = document.getElementById('btnPagar');
+                let cart = getCart();
+
+                if (cart.length === 0) {
+                    cont.innerHTML = `<div class="alert alert-info">Tu carrito está vacío.</div>`;
+                    totalEl.textContent = formatCLP(0);
+                    pagar.disabled = true;
+                    return;
+                }
+
+                const rows = cart.map(i => `
+                    <tr>
+                        <td>${i.name}</td>
+                        <td>${formatCLP(i.price)}</td>
+                        <td>
+                            <div class="input-group input-group-sm" style="max-width:120px">
+                                <button class="btn btn-outline-secondary btn-minus" data-sku="${i.sku}">-</button>
+                                <input class="form-control text-center" value="${i.qty}" readonly>
+                                <button class="btn btn-outline-secondary btn-plus" data-sku="${i.sku}">+</button>
+                            </div>
+                        </td>
+                        <td>${formatCLP(i.price * i.qty)}</td>
+                        <td><button class="btn btn-sm btn-danger btn-remove" data-sku="${i.sku}">Eliminar</button></td>
+                    </tr>
+                `).join('');
+
+                cont.innerHTML = `
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead><tr><th>Producto</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th><th></th></tr></thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    </div>
+                `;
+
+                const total = cart.reduce((acc, i) => acc + i.price * i.qty, 0);
+                totalEl.textContent = formatCLP(total);
+                pagar.disabled = false;
+
+                cont.addEventListener('click', (e) => {
+                    const minus = e.target.closest('.btn-minus');
+                    const plus  = e.target.closest('.btn-plus');
+                    const remove = e.target.closest('.btn-remove');
+                    let cart = getCart();
+
+                    if (minus) {
+                        const item = cart.find(x => x.sku === minus.dataset.sku);
+                        if (item) { item.qty = Math.max(1, item.qty - 1); saveCart(cart); render(); }
+                    }
+                    if (plus) {
+                        const item = cart.find(x => x.sku === plus.dataset.sku);
+                        if (item) { item.qty += 1; saveCart(cart); render(); }
+                    }
+                    if (remove) {
+                        cart = cart.filter(x => x.sku !== remove.dataset.sku);
+                        saveCart(cart); render();
+                    }
+                }, { once: true });
+            };
+
+            document.addEventListener('DOMContentLoaded', render);
+        </script>
+    </body>
+</html>
