@@ -1,5 +1,5 @@
 /*
--- Estilos de index.css --  
+-- Estilos de register.css --  
 
 Header h1*/
 .header{
@@ -16,4 +16,5 @@ Header h1*/
 /*Items del navbar1*/
 .nav-item{
     margin-inline: 30px;
+    
 }
