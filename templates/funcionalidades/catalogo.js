@@ -1,22 +1,16 @@
 (() => {
-  const DATA_URL = 'data/productos.json';
+  // Si frontend y API están en el MISMO origen: deja BASE_API = ''.
+  // Si los separas (opción B), pon por ej.: const BASE_API = 'http://localhost:3000';
+  const BASE_API = '';
+  const API_LIST = `${BASE_API}/api/products`;
+  const API_DETAIL = (sku) => `${BASE_API}/api/products/${encodeURIComponent(sku)}`;
+
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
   const formatCLP = (n) => Number(n).toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
 
   let productos = [];
   let filtrados = [];
-
-  async function cargarProductos() {
-    const res = await fetch(DATA_URL);
-    if (!res.ok) throw new Error('No se pudo cargar el catálogo. Asegúrate de usar un servidor local (no file://)');
-    const data = await res.json();
-    productos = data.productos || [];
-  }
-
-  function getCategorias() {
-    return [...new Set(productos.map(p => p.categoria))].sort((a, b) => a.localeCompare(b));
-  }
 
   function cardProducto(p) {
     return `
@@ -44,192 +38,194 @@
       </div>`;
   }
 
+  async function fetchProductos(params = {}) {
+    const url = new URL(API_LIST, location.origin);
+    Object.entries(params).forEach(([k, v]) => { if (v) url.searchParams.set(k, v); });
+    const res = await fetch(url.toString());
+    if (!res.ok) throw new Error('Error al cargar productos');
+    const data = await res.json();
+    return data; // { total, items, limit, offset }
+  }
+
+  async function fetchProductoBySku(sku) {
+    const res = await fetch(API_DETAIL(sku));
+    if (!res.ok) throw new Error('Producto no encontrado');
+    return res.json();
+  }
+
+  function getCategoriasLocal(list) {
+    return [...new Set(list.map(p => p.categoria))].sort((a, b) => a.localeCompare(b));
+  }
+
   function renderLista() {
     const grid = $('#listaProductos');
     const vacio = $('#estadoVacio');
     const contador = $('#contadorResultados');
-
     if (!grid) return;
 
     if (filtrados.length === 0) {
       grid.innerHTML = '';
       vacio?.classList.remove('d-none');
-      contador && (contador.textContent = '0 resultados');
+      if (contador) contador.textContent = '0 resultados';
       return;
     }
 
     vacio?.classList.add('d-none');
     grid.innerHTML = filtrados.map(cardProducto).join('');
-    contador && (contador.textContent = `${filtrados.length} resultado${filtrados.length === 1 ? '' : 's'}`);
+    if (contador) contador.textContent = `${filtrados.length} resultado${filtrados.length === 1 ? '' : 's'}`;
   }
 
-  function aplicarFiltros() {
-    const q = ($('#searchInput')?.value || '').toLowerCase().trim();
+  async function aplicarFiltrosRemotos() {
+    const q = ($('#searchInput')?.value || '').trim();
     const cat = $('#filtroCategoria')?.value || '';
-    const ord = $('#ordenar')?.value || 'relevancia';
+    const ord = $('#ordenar')?.value || '';
 
-    filtrados = productos.filter(p => {
-      const matchTexto = q === '' || (p.nombre + ' ' + p.descripcion).toLowerCase().includes(q);
-      const matchCat = cat === '' || p.categoria === cat;
-      return matchTexto && matchCat;
-    });
+    const mapOrd = {
+      'precio-asc': 'precio-asc',
+      'precio-desc': 'precio-desc',
+      'nombre-asc': 'nombre-asc',
+      'nombre-desc': 'nombre-desc',
+      'relevancia': '' // por defecto
+    };
 
-    switch (ord) {
-      case 'precio-asc':
-        filtrados.sort((a, b) => a.precio - b.precio); break;
-      case 'precio-desc':
-        filtrados.sort((a, b) => b.precio - a.precio); break;
-      case 'nombre-asc':
-        filtrados.sort((a, b) => a.nombre.localeCompare(b.nombre)); break;
-      case 'nombre-desc':
-        filtrados.sort((a, b) => b.nombre.localeCompare(a.nombre)); break;
-      default:
-        // relevancia simple: primero los que hacen match en el nombre
-        filtrados.sort((a, b) => {
-          const ql = q.toLowerCase();
-          const an = a.nombre.toLowerCase().includes(ql) ? 0 : 1;
-          const bn = b.nombre.toLowerCase().includes(ql) ? 0 : 1;
-          return an - bn;
-        });
-    }
+    const params = {
+      search: q || undefined,
+      cat: cat || undefined,
+      sort: mapOrd[ord] || undefined,
+      limit: 100
+    };
 
+    const { items } = await fetchProductos(params);
+    filtrados = items;
     renderLista();
   }
 
-  function initLista() {
-    const selectCat = $('#filtroCategoria');
+  async function initLista() {
+    try {
+      // Carga inicial (sin filtros) para llenar categorías
+      const { items } = await fetchProductos({ limit: 100 });
+      productos = items;
+      filtrados = items;
 
-    // Rellenar categorías
-    const cats = getCategorias();
-    if (selectCat && selectCat.children.length <= 1) {
-      selectCat.innerHTML = `<option value="">Todas</option>` + cats.map(c => `<option value="${c}">${c}</option>`).join('');
+      // Llenar select de categorías
+      const selectCat = $('#filtroCategoria');
+      if (selectCat && selectCat.children.length <= 1) {
+        const cats = getCategoriasLocal(productos);
+        selectCat.innerHTML = `<option value="">Todas</option>` + cats.map(c => `<option value="${c}">${c}</option>`).join('');
+      }
+
+      // Hash de categoría (#cat=Poleras)
+      if (location.hash.startsWith('#cat=')) {
+        const catHash = decodeURIComponent(location.hash.split('=')[1] || '');
+        if (selectCat) selectCat.value = catHash;
+      }
+
+      // Eventos
+      $('#searchForm')?.addEventListener('submit', (e) => { e.preventDefault(); aplicarFiltrosRemotos(); });
+      $('#ordenar')?.addEventListener('change', aplicarFiltrosRemotos);
+      $('#filtroCategoria')?.addEventListener('change', aplicarFiltrosRemotos);
+
+      renderLista();
+      // Aplica filtros remotos si hay hash o query de inicio
+      if (location.hash.startsWith('#cat=')) await aplicarFiltrosRemotos();
+    } catch (err) {
+      console.error(err);
+      $('#estadoVacio')?.classList.remove('d-none');
+      if ($('#estadoVacio')) $('#estadoVacio').textContent = 'Error cargando productos.';
     }
-
-    // Eventos
-    $('#searchForm')?.addEventListener('submit', (e) => { e.preventDefault(); aplicarFiltros(); });
-    $('#ordenar')?.addEventListener('change', aplicarFiltros);
-    $('#filtroCategoria')?.addEventListener('change', aplicarFiltros);
-
-    // Lee hash de categoría (ej: #cat=Poleras)
-    if (location.hash.startsWith('#cat=')) {
-      const catHash = decodeURIComponent(location.hash.split('=')[1] || '');
-      if (selectCat) selectCat.value = catHash;
-    }
-
-    // Primera render
-    aplicarFiltros();
   }
 
-  function renderDetalle(p) {
-    $('#breadcrumbActual') && ($('#breadcrumbActual').textContent = p.nombre);
-
+  async function initDetalle() {
     const wrap = $('#detalleProducto');
     if (!wrap) return;
 
-    wrap.innerHTML = `
-      <div class="col-12 col-lg-6">
-        <div class="border rounded p-2">
-          <img src="${p.imagen}" class="img-fluid" alt="${p.nombre}">
-        </div>
-      </div>
-      <div class="col-12 col-lg-6">
-        <h1 class="h3">${p.nombre}</h1>
-        <div class="text-muted mb-2">${p.categoria}</div>
-        <p>${p.descripcion}</p>
-        <p class="fs-4 fw-bold">${formatCLP(p.precio)}</p>
+    try {
+      const params = new URLSearchParams(location.search);
+      const sku = params.get('sku')?.trim();
+      if (!sku) throw new Error('SKU ausente');
 
-        <div class="row g-3 mb-3">
-          <div class="col-12 col-sm-6">
-            <label for="selectTalla" class="form-label">Talla</label>
-            <select id="selectTalla" class="form-select">
-              ${p.tallas.map(t => `<option value="${t}">${t}</option>`).join('')}
-            </select>
+      const p = await fetchProductoBySku(sku);
+
+      // Render detalle (idéntico al que hicimos antes)
+      const formatCLP = (n) => Number(n).toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
+      $('#breadcrumbActual') && ($('#breadcrumbActual').textContent = p.nombre);
+      wrap.innerHTML = `
+        <div class="col-12 col-lg-6">
+          <div class="border rounded p-2">
+            <img src="${p.imagen}" class="img-fluid" alt="${p.nombre}">
           </div>
-          <div class="col-12 col-sm-6">
-            <label for="qtyInput" class="form-label">Cantidad</label>
-            <div class="input-group">
-              <button class="btn btn-outline-secondary" type="button" id="qtyMinus">-</button>
-              <input id="qtyInput" class="form-control text-center" type="number" min="1" value="1">
-              <button class="btn btn-outline-secondary" type="button" id="qtyPlus">+</button>
+        </div>
+        <div class="col-12 col-lg-6">
+          <h1 class="h3">${p.nombre}</h1>
+          <div class="text-muted mb-2">${p.categoria}</div>
+          <p>${p.descripcion}</p>
+          <p class="fs-4 fw-bold">${formatCLP(p.precio)}</p>
+
+          <div class="row g-3 mb-3">
+            <div class="col-12 col-sm-6">
+              <label for="selectTalla" class="form-label">Talla</label>
+              <select id="selectTalla" class="form-select">
+                ${(p.tallas || []).map(t => `<option value="${t}">${t}</option>`).join('')}
+              </select>
+            </div>
+            <div class="col-12 col-sm-6">
+              <label for="qtyInput" class="form-label">Cantidad</label>
+              <div class="input-group">
+                <button class="btn btn-outline-secondary" type="button" id="qtyMinus">-</button>
+                <input id="qtyInput" class="form-control text-center" type="number" min="1" value="1">
+                <button class="btn btn-outline-secondary" type="button" id="qtyPlus">+</button>
+              </div>
             </div>
           </div>
+
+          <div class="d-grid d-sm-flex gap-2">
+            <button id="btnAddDetail" class="btn btn-primary btn-add-to-cart"
+                    data-sku="${p.sku}" data-name="${p.nombre}" data-price="${p.precio}">
+              Añadir al carrito
+            </button>
+            <a class="btn btn-outline-secondary" href="productos.html">Volver a productos</a>
+          </div>
+          <small class="text-muted d-block mt-2">Stock disponible: ${p.stock}</small>
         </div>
+      `;
 
-        <div class="d-grid d-sm-flex gap-2">
-          <button id="btnAddDetail" class="btn btn-primary btn-add-to-cart"
-                  data-sku="${p.sku}" data-name="${p.nombre}" data-price="${p.precio}">
-            Añadir al carrito
-          </button>
-          <a class="btn btn-outline-secondary" href="productos.html">Volver a productos</a>
-        </div>
-        <small class="text-muted d-block mt-2">Stock disponible: ${p.stock}</small>
-      </div>
-    `;
+      // Qty
+      const qtyInput = $('#qtyInput');
+      $('#qtyMinus')?.addEventListener('click', () => {
+        qtyInput.value = Math.max(1, parseInt(qtyInput.value || '1', 10) - 1);
+      });
+      $('#qtyPlus')?.addEventListener('click', () => {
+        qtyInput.value = Math.max(1, parseInt(qtyInput.value || '1', 10) + 1);
+      });
 
-    // Manejo de qty
-    const qtyInput = $('#qtyInput');
-    $('#qtyMinus')?.addEventListener('click', () => {
-      qtyInput.value = Math.max(1, parseInt(qtyInput.value || '1', 10) - 1);
-    });
-    $('#qtyPlus')?.addEventListener('click', () => {
-      qtyInput.value = Math.max(1, parseInt(qtyInput.value || '1', 10) + 1);
-    });
+      // Vincula talla/cantidad al botón para app.js
+      const btn = $('#btnAddDetail');
+      const updateBtnData = () => {
+        btn.dataset.size = $('#selectTalla')?.value || '';
+        btn.dataset.qtyEl = '#qtyInput';
+        btn.dataset.sizeEl = '#selectTalla';
+      };
+      updateBtnData();
+      $('#selectTalla')?.addEventListener('change', updateBtnData);
 
-    // Actualiza dataset para que app.js lo lea
-    const btn = $('#btnAddDetail');
-    const updateBtnData = () => {
-      btn.dataset.size = $('#selectTalla')?.value || '';
-      btn.dataset.qtyEl = '#qtyInput';  // app.js leerá desde este input
-      btn.dataset.sizeEl = '#selectTalla';
-    };
-    updateBtnData();
-    $('#selectTalla')?.addEventListener('change', updateBtnData);
-  }
-
-  function renderRelacionados(p) {
-    const cont = $('#relacionados');
-    if (!cont) return;
-    const rel = productos.filter(x => x.categoria === p.categoria && x.sku !== p.sku).slice(0, 3);
-    if (rel.length === 0) {
-      cont.innerHTML = `<div class="col"><div class="alert alert-light">No hay productos relacionados.</div></div>`;
-      return;
+      // Relacionados
+      // (Cargamos 100 productos y filtramos localmente por categoría)
+      try {
+        const { items } = await fetchProductos({ limit: 100, cat: p.categoria });
+        const relacionados = items.filter(x => x.sku !== p.sku).slice(0, 3);
+        const contRel = $('#relacionados');
+        contRel.innerHTML = relacionados.length
+          ? relacionados.map(cardProducto).join('')
+          : `<div class="col"><div class="alert alert-light">No hay productos relacionados.</div></div>`;
+      } catch {}
+    } catch (err) {
+      console.error(err);
+      wrap.innerHTML = `<div class="col"><div class="alert alert-danger">Error cargando el detalle.</div></div>`;
     }
-    cont.innerHTML = rel.map(cardProducto).join('');
-  }
-
-  async function initProductosPage() {
-    await cargarProductos();
-    // Mostrar skeleton simple si quieres aquí
-    filtrados = [...productos];
-    initLista();
-  }
-
-  async function initDetallePage() {
-    await cargarProductos();
-    const params = new URLSearchParams(location.search);
-    const sku = params.get('sku')?.trim() || '';
-    const p = productos.find(x => x.sku.toLowerCase() === sku.toLowerCase());
-    const wrap = $('#detalleProducto');
-
-    if (!p) {
-      wrap.innerHTML = `<div class="col"><div class="alert alert-warning">Producto no encontrado.</div></div>`;
-      return;
-    }
-
-    renderDetalle(p);
-    renderRelacionados(p);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    if ($('#listaProductos')) initProductosPage().catch(err => {
-      console.error(err);
-      $('#estadoVacio')?.classList.remove('d-none');
-      $('#estadoVacio') && ($('#estadoVacio').textContent = 'Error cargando productos. ¿Abriste con Live Server?');
-    });
-
-    if ($('#detalleProducto')) initDetallePage().catch(err => {
-      console.error(err);
-      $('#detalleProducto').innerHTML = `<div class="col"><div class="alert alert-danger">Error cargando detalle.</div></div>`;
-    });
+    if ($('#listaProductos')) initLista();
+    if ($('#detalleProducto')) initDetalle();
   });
 })();
