@@ -16,123 +16,134 @@
                 </div>
             </div>
         </div>
-        <nav class="navbar navbar-expand-lg">
-            <!-- Logo principal-->
-            <div class="container-fluid">
-                <a class="navbar-brand" href="index.html">
-                    <img src="Imagenes/confecciones_brenda_logo.png" alt="Logo" id="Logo"> 
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                    <img src="Imagenes/confecciones_brenda_logo.png" alt="Logo Confecciones Brenda" id="Logo" style="height:40px">
                 </a>
-                <!-- NavBar con menus desplegables-->
-                <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
-                    <ul class="navbar-nav">
-                        <!-- Item normal clickeable-->
+
+                <!-- Botón hamburguesa -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Alternar navegación">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Contenido colapsable -->
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav mx-auto">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="index.html">Inicio</a>
+                            <a class="nav-link active" href="index.html" aria-current="page">Inicio</a>
                         </li>
-                        <!-- Items desplegables-->
+
+                        <!-- Categorías -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categorías</a>
-                            <ul class="dropdown-menu">
+                            <a class="nav-link dropdown-toggle" href="#" id="categoriasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categorías</a>
+                            <ul class="dropdown-menu" aria-labelledby="categoriasDropdown">
                                 <li><a class="dropdown-item" href="#">Buzo completo</a></li>
                                 <li><a class="dropdown-item" href="#">Poleras</a></li>
                                 <li><a class="dropdown-item" href="#">Polerones</a></li>
                                 <li><a class="dropdown-item" href="#">Shorts</a></li>
                             </ul>
                         </li>
+
+                        <!-- Contacto -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Contáctanos</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Ubicacion</a></li>
+                            <a class="nav-link dropdown-toggle" href="#" id="contactoDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Contáctanos</a>
+                            <ul class="dropdown-menu" aria-labelledby="contactoDropdown">
+                                <li><a class="dropdown-item" href="#">Ubicación</a></li>
                                 <li><a class="dropdown-item" href="#">WhatsApp</a></li>
                                 <li><a class="dropdown-item" href="#">Instagram</a></li>
                                 <li><a class="dropdown-item" href="#">Correo</a></li>
                             </ul>
                         </li>
-                        <!-- Items normal clickeables-->
-                        <li class="nav-item">
-                            <a class="nav-link" href="login.html">Mi Cuenta</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Carrito</a>
-                        </li>
+
+                        <li class="nav-item"><a class="nav-link" href="login.html">Mi Cuenta</a></li>
                     </ul>
+
+                    <!-- Buscar + Carrito a la derecha -->
+                    <form id="searchForm" class="d-flex me-3" role="search">
+                        <input id="searchInput" class="form-control me-2" type="search" placeholder="Buscar producto..." aria-label="Buscar producto">
+                        <button class="btn btn-outline-success" type="submit">Buscar</button>
+                    </form>
+
+                    <a class="btn btn-outline-primary position-relative" href="carrito.html">
+                        Carrito
+                        <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">0</span>
+                    </a>
                 </div>
             </div>
         </nav>
-        <!-- Barra para buscar -->
-        <nav class="navbar navbar-expand-lg bg-light">
-            <div class="container-fluid justify-content-center" >
-                <form class="d-flex w-75" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Buscar producto..." aria-label="Search"/>
-                    <button class="btn btn-outline-success" type="submit">Buscar</button>
-                </form>
-            </div>
-        </nav>
-        <!-- Carrusel de Imagenes -->
+        <!-- CARRUSEL -->
         <div id="carruselImagenesIndex" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carruselImagenesIndex" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carruselImagenesIndex" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            </div>
+
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                <img src="Imagenes/jovenes_uniforme.png" class="d-block w-100" alt="Jovenes con uniforme">
+                    <img src="Imagenes/jovenes_uniforme.png" class="d-block w-100" alt="Jóvenes con uniforme" width="1920" height="700">
                 </div>
                 <div class="carousel-item">
-                <img src="Imagenes/jovenes_buzo.png" class="d-block w-100" alt="Jovenes con buzo">
+                    <img src="Imagenes/jovenes_buzo.png" class="d-block w-100" alt="Jóvenes con buzo" width="1920" height="700" loading="lazy">
                 </div>
             </div>
+
             <button class="carousel-control-prev" type="button" data-bs-target="#carruselImagenesIndex" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
+                <span class="visually-hidden">Anterior</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#carruselImagenesIndex" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
+                <span class="visually-hidden">Siguiente</span>
             </button>
         </div>
+
         <!-- Productos destacados en tarjetas -->
         <section class="container my-5">
             <h2 class="text-center mb-4">Productos destacados</h2>
-            <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="row row-cols-1 row-cols-md-3 g-4" id="featuredProducts">
                 <div class="col">
                     <div class="card h-100">
-                        <img src="Imagenes/buzo_1.png" class="card-img-top" alt="Buzo 1">
+                        <img src="Imagenes/buzo_1.png" class="card-img-top" alt="Buzo escolar azul" width="600" height="600" loading="lazy">
                         <div class="card-body">
                             <h3 class="card-title">Buzo escolar azul</h3>
                             <p class="card-text">Buzo de algodón 100% con logo bordado.</p>
-                            <p class="card-text">
-                                <strong>$25.000</strong>
-                            </p>
-                            <a href="#" class="btn btn-primary">Comprar</a>
+                            <p class="card-text"><strong>$25.000</strong></p>
+                            <button class="btn btn-primary btn-add-to-cart" data-sku="BUZO-AZUL-01" data-name="Buzo escolar azul" data-price="25000">Añadir al carrito</button>
                         </div>
                     </div>
                 </div>
+
                 <div class="col">
                     <div class="card h-100">
-                        <img src="Imagenes/pantalon_1.png" class="card-img-top" alt="Pantalon 1">
+                        <img src="Imagenes/pantalon_1.png" class="card-img-top" alt="Pantalón Escolar Gris" width="600" height="600" loading="lazy">
                         <div class="card-body">
-                            <h3 class="card-titel">Pantalón Escolar Gris</h3>
-                            <p class="card-text">Pantalón de tela resistente con ajuste elástico.</p>
-                            <p class="card-text">
-                                <strong>$30.000</strong>
-                            </p>
-                            <a href="#" class="btn btn-primary">Comprar</a>
+                            <h3 class="card-title">Pantalón Escolar Gris</h3>
+                            <p class="card-text">Tela resistente con ajuste elástico.</p>
+                            <p class="card-text"><strong>$30.000</strong></p>
+                            <button class="btn btn-primary btn-add-to-cart" data-sku="PANT-GRIS-01" data-name="Pantalón Escolar Gris" data-price="30000">Añadir al carrito</button>
                         </div>
                     </div>
                 </div>
+
                 <div class="col">
                     <div class="card h-100">
-                        <img src="Imagenes/poleron_1.png" class="card-img-top" alt="Poleron 1">
+                        <img src="Imagenes/poleron_1.png" class="card-img-top" alt="Polerón Escolar Rojo" width="600" height="600" loading="lazy">
                         <div class="card-body">
-                            <h3 class="card-titel">Polerón Escolar Rojo</h3>
-                            <p class="card-text">Polerón con capucha y bolsillo frontal.</p>
-                            <p class="card-text">
-                                <strong>$28.000</strong>
-                            </p>
-                            <a href="#" class="btn btn-primary">Comprar</a>
+                            <h3 class="card-title">Polerón Escolar Rojo</h3>
+                            <p class="card-text">Con capucha y bolsillo frontal.</p>
+                            <p class="card-text"><strong>$28.000</strong></p>
+                            <button class="btn btn-primary btn-add-to-cart" data-sku="POL-ROJO-01" data-name="Polerón Escolar Rojo" data-price="28000">Añadir al carrito</button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
         <!-- Script js-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="funcionalidades/app.js"></script>
+        <script src="funcionalidades/auth.js"></script>
     </body>
 </html>
