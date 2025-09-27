@@ -77,13 +77,41 @@
             </div>
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
         <script>
             const CART_KEY = 'brenda_cart';
+            const BASE_API = '';
+            const formatCLP = (n) => Number(n).toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
+
             const getCart = () => JSON.parse(localStorage.getItem(CART_KEY) || '[]');
             const saveCart = (c) => localStorage.setItem(CART_KEY, JSON.stringify(c));
-            const formatCLP = (n) => n.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
 
+            async function whoAmI() {
+                const r = await fetch(`${BASE_API}/api/auth/me`, { credentials: 'include' });
+                const j = await r.json(); return j.user;
+            }
+
+            async function checkout() {
+                const user = await whoAmI();
+                if (!user) { alert('Debes iniciar sesión para pagar.'); location.href = 'login.html'; return; }
+
+                const items = getCart().map(i => ({ sku: i.sku, size: i.size || null, qty: i.qty }));
+                if (!items.length) return alert('Tu carrito está vacío.');
+
+                const res = await fetch(`${BASE_API}/api/orders`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ items })
+                });
+                const j = await res.json();
+                if (!res.ok) { alert(j.error || 'Error en el pago'); return; }
+
+                alert(`¡Orden ${j.orderId} creada! Total: ${formatCLP(j.total)}`);
+                localStorage.removeItem(CART_KEY);
+                location.href = 'index.html';
+            }
+
+            // Render igual que antes, con talla
             const render = () => {
                 const cont = document.getElementById('carritoLista');
                 const totalEl = document.getElementById('carritoTotal');
@@ -99,17 +127,17 @@
 
                 const rows = cart.map(i => `
                     <tr>
-                        <td>${i.name}</td>
+                        <td>${i.name} ${i.size ? `<span class="badge text-bg-light ms-1">${i.size}</span>` : ''}</td>
                         <td>${formatCLP(i.price)}</td>
                         <td>
-                            <div class="input-group input-group-sm" style="max-width:120px">
-                                <button class="btn btn-outline-secondary btn-minus" data-sku="${i.sku}">-</button>
+                            <div class="input-group input-group-sm" style="max-width:160px">
+                                <button class="btn btn-outline-secondary btn-minus" data-sku="${i.sku}" data-size="${i.size||''}">-</button>
                                 <input class="form-control text-center" value="${i.qty}" readonly>
-                                <button class="btn btn-outline-secondary btn-plus" data-sku="${i.sku}">+</button>
+                                <button class="btn btn-outline-secondary btn-plus" data-sku="${i.sku}" data-size="${i.size||''}">+</button>
                             </div>
                         </td>
                         <td>${formatCLP(i.price * i.qty)}</td>
-                        <td><button class="btn btn-sm btn-danger btn-remove" data-sku="${i.sku}">Eliminar</button></td>
+                        <td><button class="btn btn-sm btn-danger btn-remove" data-sku="${i.sku}" data-size="${i.size||''}">Eliminar</button></td>
                     </tr>
                 `).join('');
 
@@ -132,22 +160,29 @@
                     const remove = e.target.closest('.btn-remove');
                     let cart = getCart();
 
+                    const key = (sku, size) => `${sku}@@${size||''}`;
+                    const findIndex = (sku, size) => cart.findIndex(x => (x.sku+'@@'+(x.size||'')) === key(sku,size));
+
                     if (minus) {
-                        const item = cart.find(x => x.sku === minus.dataset.sku);
-                        if (item) { item.qty = Math.max(1, item.qty - 1); saveCart(cart); render(); }
+                        const idx = findIndex(minus.dataset.sku, minus.dataset.size || null);
+                        if (idx >= 0) { cart[idx].qty = Math.max(1, cart[idx].qty - 1); saveCart(cart); render(); }
                     }
                     if (plus) {
-                        const item = cart.find(x => x.sku === plus.dataset.sku);
-                        if (item) { item.qty += 1; saveCart(cart); render(); }
+                        const idx = findIndex(plus.dataset.sku, plus.dataset.size || null);
+                        if (idx >= 0) { cart[idx].qty += 1; saveCart(cart); render(); }
                     }
                     if (remove) {
-                        cart = cart.filter(x => x.sku !== remove.dataset.sku);
+                        cart = cart.filter(x => key(x.sku, x.size) !== key(remove.dataset.sku, remove.dataset.size || null));
                         saveCart(cart); render();
                     }
                 }, { once: true });
             };
 
-            document.addEventListener('DOMContentLoaded', render);
+            document.addEventListener('DOMContentLoaded', () => {
+                render();
+                document.getElementById('btnPagar').addEventListener('click', checkout);
+            });
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

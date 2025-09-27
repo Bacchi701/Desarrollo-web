@@ -34,6 +34,12 @@
     const size = btn.dataset.size || (sizeEl ? sizeEl.value : null);
     const qty  = Math.max(1, parseInt(qtyEl?.value || '1', 10));
 
+    const maxStock = btn.dataset.maxStock ? parseInt(btn.dataset.maxStock, 10) : null;
+    if (maxStock != null && qty > maxStock) {
+      alert(`Solo hay ${maxStock} unidad(es) disponibles de la talla seleccionada.`);
+      return;
+    }
+
     let cart = getCart();
 
     // Clave compuesta por SKU + talla (para contar por variante)

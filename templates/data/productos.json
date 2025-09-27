@@ -7,6 +7,16 @@
       "precio": 25000,
       "categoria": "Buzo completo",
       "tallas": ["4", "6", "8", "10", "12", "S", "M", "L"],
+      "variantes": [
+        { "talla": "4", "stock": 5},
+        { "talla": "6", "stock": 5},
+        { "talla": "8", "stock": 4},
+        { "talla": "10", "stock": 4},
+        { "talla": "12", "stock": 3},
+        { "talla": "S", "stock": 2},
+        { "talla": "M", "stock": 1},
+        { "talla": "L", "stock": 1}
+      ],
       "imagen": "Imagenes/buzo_1.png",
       "stock": 25
     },
@@ -17,6 +27,11 @@
       "precio": 30000,
       "categoria": "Pantalones",
       "tallas": ["4", "6", "8", "10", "12", "S", "M", "L"],
+      "variantes": [
+        { "talla": "S", "stock": 8},
+        { "talla": "M", "stock": 6},
+        { "talla": "L", "stock": 4}
+      ],
       "imagen": "Imagenes/pantalon_1.png",
       "stock": 18
     },
@@ -27,6 +42,12 @@
       "precio": 28000,
       "categoria": "Polerones",
       "tallas": ["S", "M", "L", "XL"],
+      "variantes": [
+        { "talla": "S", "stock": 5},
+        { "talla": "M", "stock": 3},
+        { "talla": "L", "stock": 2},
+        { "talla": "XL", "stock": 2}
+      ],
       "imagen": "Imagenes/poleron_1.png",
       "stock": 12
     },
@@ -37,6 +58,16 @@
       "precio": 9000,
       "categoria": "Poleras",
       "tallas": ["4", "6", "8", "10", "12", "S", "M", "L"],
+      "variantes": [
+        { "talla": "4", "stock": 10},
+        { "talla": "6", "stock": 10},
+        { "talla": "8", "stock": 8},
+        { "talla": "10", "stock": 8},
+        { "talla": "12", "stock": 6},
+        { "talla": "S", "stock": 4},
+        { "talla": "M", "stock": 2},
+        { "talla": "L", "stock": 2}
+      ],
       "imagen": "Imagenes/polera_blanca.png",
       "stock": 50
     },
@@ -47,6 +78,12 @@
       "precio": 11000,
       "categoria": "Poleras",
       "tallas": ["S", "M", "L", "XL"],
+      "variantes": [
+        { "talla": "S", "stock": 12},
+        { "talla": "M", "stock": 12},
+        { "talla": "L", "stock": 8},
+        { "talla": "XL", "stock": 8}
+      ],
       "imagen": "Imagenes/polera_azul.png",
       "stock": 40
     },
@@ -57,6 +94,15 @@
       "precio": 12000,
       "categoria": "Shorts",
       "tallas": ["6", "8", "10", "12", "S", "M", "L"],
+      "variantes": [
+        { "talla": "6", "stock": 8},
+        { "talla": "8", "stock": 7},
+        { "talla": "10", "stock": 5},
+        { "talla": "12", "stock": 4},
+        { "talla": "S", "stock": 4},
+        { "talla": "M", "stock": 3},
+        { "talla": "L", "stock": 2}
+      ],
       "imagen": "Imagenes/short_azul.png",
       "stock": 33
     }
